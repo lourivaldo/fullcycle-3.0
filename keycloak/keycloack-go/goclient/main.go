@@ -11,7 +11,7 @@ import (
 
 var (
 	clientID     = "myclient"
-	clientSecret = "0sOhLR0qAOK23Y7g9H8Wi4duPNCiCead"
+	clientSecret = "Xb1YvzDwvNUJudl7YpDps0AlLAfof7je"
 )
 
 func main() {
@@ -47,10 +47,26 @@ func main() {
 			return
 		}
 
+		idToken, ok := token.Extra("id_token").(string)
+		if !ok {
+			http.Error(writer, "Falha ao gerar o IDtoken", http.StatusInternalServerError)
+			return
+		}
+
+		userInfo, err := provider.UserInfo(ctx, oauth2.StaticTokenSource(token))
+		if err != nil {
+			http.Error(writer, "Falha ao pegar user info", http.StatusInternalServerError)
+			return
+		}
+
 		resp := struct {
 			AccessToken *oauth2.Token
+			IDToken     string
+			UserInfo    *oidc.UserInfo
 		}{
 			token,
+			idToken,
+			userInfo,
 		}
 
 		data, err := json.Marshal(resp)
