@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_ADDR=db
+      - DB_VENDOR=mysql
+      - DB_DATABASE=keycloak
+      - DB_PORT=3306
+      - DB_USER=admin
+      - DB_PASSWORD=admin
+    ports:
+      - '8080:8080'
+    volumes:
+      - './customtheme:/opt/jboss/keycloak/themes/customtheme'
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    container_name: keycloak_mysql
+    restart: always
+    tty: true
+    ports:
+      - '33306:3306'
+    volumes:
+      - 'dbdata:/var/lib/mysql'
+    environment:
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_USER=admin
+
+volumes:
+  dbdata:
+    driver: local
+
