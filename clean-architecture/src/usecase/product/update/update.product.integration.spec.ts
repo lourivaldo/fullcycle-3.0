@@ -1,10 +1,9 @@
 import { Sequelize } from "sequelize-typescript";
-import FindProductUsecase from "./find.product.usecase";
 import ProductModel from '../../../infrastructure/product/repository/sequelize/product.model';
 import ProductRepository from '../../../infrastructure/product/repository/sequelize/product.repository';
-import Product from '../../../domain/product/entity/product';
+import UpdateProductUsecase from './update.product.usecase';
 
-describe("Test find product use case", () => {
+describe("Test update product use case", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
@@ -23,22 +22,24 @@ describe("Test find product use case", () => {
     await sequelize.close();
   });
 
-  it("should find a product", async () => {
+  it("should update product", async () => {
+    await ProductModel.create({
+      id: '1',
+      name: 'any_1',
+      price: 1,
+    })
     const productRepository = new ProductRepository();
-    const usecase = new FindProductUsecase(productRepository);
-
-    const product = new Product("123", "Food", 25);
-
-    await productRepository.create(product);
+    const usecase = new UpdateProductUsecase(productRepository);
 
     const input = {
-      id: "123",
+      id: '1',
+      name: 'any_1_update',
+      price: 10,
     };
-
     const output = {
-      id: "123",
-      name: "Food",
-      price: 25,
+      id: '1',
+      name: 'any_1_update',
+      price: 10,
     };
 
     const result = await usecase.execute(input);
