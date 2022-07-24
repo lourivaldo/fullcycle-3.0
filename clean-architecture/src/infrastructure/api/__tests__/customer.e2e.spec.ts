@@ -3,7 +3,7 @@ import request from 'supertest'
 
 describe('E2E test for customer', function () {
   beforeEach(async () => {
-    await sequelize.sync({force: true})
+    await sequelize.sync({ force: true })
   })
 
   afterAll(async () => {
