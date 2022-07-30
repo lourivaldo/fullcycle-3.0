@@ -30,7 +30,7 @@ export default class CreateCustomerUseCase {
     await this.customerRepository.create(customer);
 
     return {
-      id: customer._id,
+      id: customer.id,
       name: customer.name,
       address: {
         street: customer.Address.street,

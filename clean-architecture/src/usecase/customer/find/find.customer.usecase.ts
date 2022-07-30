@@ -15,7 +15,7 @@ export default class FindCustomerUseCase {
     const customer = await this.customerRepository.find(input.id);
 
     return {
-      id: customer._id,
+      id: customer.id,
       name: customer.name,
       address: {
         street: customer.Address.street,
