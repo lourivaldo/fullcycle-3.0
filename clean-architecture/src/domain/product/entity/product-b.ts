@@ -3,7 +3,6 @@ import { NotificationError } from '../../@shared/notification/notification.error
 import Entity from '../../@shared/entity/entity.abstract';
 
 export default class ProductB extends Entity implements ProductInterface {
-  private _id: string;
   private _name: string;
   private _price: number;
 
@@ -16,10 +15,6 @@ export default class ProductB extends Entity implements ProductInterface {
     if (this.notification.hasErrors()) {
       throw new NotificationError(this.notification.getErrors());
     }
-  }
-
-  get id(): string {
-    return this._id;
   }
 
   get name(): string {
