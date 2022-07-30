@@ -1,6 +1,6 @@
 export type NotificationErrorProps = {
-  message: string
   context: string
+  message: string
 }
 
 export class Notification {
