@@ -218,7 +218,7 @@ module.controller('RealmCreateCtrl', function($scope, Current, Realm, $upload, $
     }, true);
 
     $scope.$watch('realm.realm', function() {
-	    $scope.realm.id = $scope.realm.realm;
+	    $scope.realm._id = $scope.realm.realm;
     }, true);
 
     $scope.save = function() {

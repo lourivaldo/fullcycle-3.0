@@ -21,7 +21,7 @@ class OutputMapper {
   static toOutput(customer: Customer[]): OutputListCustomerDto {
     return {
       customers: customer.map((customer) => ({
-        id: customer.id,
+        id: customer._id,
         name: customer.name,
         address: {
           street: customer.Address.street,
