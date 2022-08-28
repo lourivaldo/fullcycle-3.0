@@ -1,4 +1,5 @@
 {
+  "license": "MIT",
   "devDependencies": {
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.242",
@@ -20,7 +21,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "test": "npm run tsc -- --noEmit && jest",
+    "test": "yarn tsc --noEmit && jest",
     "tsc": "tsc"
   },
   "dependencies": {
