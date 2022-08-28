@@ -1,7 +1,7 @@
 import Product from '../entity/product';
 import ProductService from './product.service';
 
-describe('Order service unit tests', () => {
+describe('Product service unit tests', () => {
   it('should change prices of all products', () => {
     const product1 = new Product('p1', 'product 1', 10);
     const product2 = new Product('p2', 'product 2', 20);
