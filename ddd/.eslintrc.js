@@ -19,5 +19,6 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
   },
 };
