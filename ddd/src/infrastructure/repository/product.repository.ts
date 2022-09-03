@@ -1,8 +1,9 @@
 import { RepositoryInterface } from '../../domain/repository/repository.interface';
 import Product from '../../domain/entity/product';
 import { ProductModel } from '../db/sequelize/model/product';
+import { ProductRepositoryInterface } from '../../domain/repository/product-repository.interface';
 
-export class ProductRepository implements RepositoryInterface<Product> {
+export class ProductRepository implements ProductRepositoryInterface {
   async create(product: Product): Promise<void> {
     await ProductModel.create({
       id: product.id,
