@@ -1,5 +1,14 @@
 import Address from './address';
 import Customer from './customer';
+import { EventDispatcher } from '../event/@shared/event-dispatcher';
+import { SendConsoleLogHandler } from '../event/customer/handler/send-console-log.handler';
+import { CustomerAddressUpdatedEvent } from '../event/customer/customer-address-updated.event';
+import MockDate from 'mockdate';
+import { CustomerCreatedEvent } from '../event/customer/customer-created.event';
+import { SendConsoleLog1Handler } from '../event/customer/handler/send-console-log-1.handler';
+import { SendConsoleLog2Handler } from '../event/customer/handler/send-console-log-2.handler';
+
+MockDate.set(new Date('2022-09-04T00:58:18.956Z'));
 
 describe('Customer unit tests', () => {
   it('should throw error when id is empty', () => {
@@ -54,5 +63,43 @@ describe('Customer unit tests', () => {
     expect(customer.rewardPoints).toBe(10);
     customer.addRewardPoints(10);
     expect(customer.rewardPoints).toBe(20);
+  });
+
+  it('should change customer address', () => {
+    const customer = new Customer('123', 'any');
+    const address = new Address('any_street', 123, '99999999', 'any_city');
+    customer.changeAddress(address);
+
+    const eventDispatcher = new EventDispatcher();
+    const eventHandler = new SendConsoleLogHandler();
+    const eventHandlerSpy = jest.spyOn(eventHandler, 'handle');
+    const event = new CustomerAddressUpdatedEvent(customer);
+
+    eventDispatcher.register('CustomerAddressUpdatedEvent', eventHandler);
+    eventDispatcher.notify(event);
+
+    expect(eventHandlerSpy).toHaveBeenCalledTimes(1);
+    expect(eventHandlerSpy).toHaveBeenCalledWith({
+      dataTimeOccurred: new Date('2022-09-04T00:58:18.956Z'),
+      eventData: customer,
+    });
+  });
+
+  it('should create customer events', () => {
+    const customer = new Customer('123', 'any');
+
+    const eventDispatcher = new EventDispatcher();
+    const eventHandler1 = new SendConsoleLog1Handler();
+    const eventHandler2 = new SendConsoleLog2Handler();
+    const eventHandler1Spy = jest.spyOn(eventHandler1, 'handle');
+    const eventHandler2Spy = jest.spyOn(eventHandler2, 'handle');
+    const event = new CustomerCreatedEvent(customer);
+
+    eventDispatcher.register('CustomerCreatedEvent', eventHandler1);
+    eventDispatcher.register('CustomerCreatedEvent', eventHandler2);
+    eventDispatcher.notify(event);
+
+    expect(eventHandler1Spy).toHaveBeenCalledTimes(1);
+    expect(eventHandler2Spy).toHaveBeenCalledTimes(1);
   });
 });
