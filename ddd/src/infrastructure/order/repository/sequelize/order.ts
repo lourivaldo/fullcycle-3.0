@@ -23,6 +23,9 @@ export class OrderModel extends Model {
   @Column({ allowNull: false })
   declare customer_id: string;
 
+  @Column({ allowNull: false })
+  declare is_paid: boolean;
+
   @BelongsTo(() => CustomerModel)
   declare customer: CustomerModel;
 

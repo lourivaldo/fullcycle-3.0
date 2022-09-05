@@ -5,6 +5,7 @@ export default class Order {
   private _customerId: string;
   private _items: OrderItem[];
   private _total: number;
+  private _isPaid = false;
 
   constructor(id: string, customerId: string, items: OrderItem[]) {
     this._id = id;
@@ -22,8 +23,16 @@ export default class Order {
     return this._customerId;
   }
 
+  get isPaid(): boolean {
+    return this._isPaid;
+  }
+
   get items(): OrderItem[] {
     return this._items;
+  }
+
+  confirmPayment() {
+    this._isPaid = true;
   }
 
   validate(): boolean {

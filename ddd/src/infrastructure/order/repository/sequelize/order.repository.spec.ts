@@ -67,6 +67,80 @@ describe('OrderRepository', () => {
       id: 'o1',
       customer_id: '1',
       total: order.total(),
+      is_paid: order.isPaid,
+      items: [
+        {
+          id: orderItem.id,
+          name: orderItem.name,
+          price: orderItem.price / orderItem.quantity,
+          quantity: orderItem.quantity,
+          product_id: '1',
+          order_id: 'o1',
+        },
+      ],
+    });
+  });
+
+  it('should update order', async () => {
+    const customerRepository = new CustomerRepository();
+    const customer = new Customer('1', 'Customer 1');
+    const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1');
+    customer.address = address;
+    await customerRepository.create(customer);
+
+    const productRepository = new ProductRepository();
+    const product = new Product('1', 'Product 1', 100);
+    await productRepository.create(product);
+
+    const orderItem = new OrderItem(
+      '1',
+      product.name,
+      product.price,
+      product.id,
+      2,
+    );
+    const order = new Order('o1', '1', [orderItem]);
+
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order);
+
+    const orderModel = await OrderModel.findOne({
+      where: { id: order.id },
+      include: ['items'],
+    });
+
+    console.log(order.isPaid);
+    expect(orderModel.toJSON()).toStrictEqual({
+      id: 'o1',
+      customer_id: '1',
+      total: order.total(),
+      is_paid: order.isPaid,
+      items: [
+        {
+          id: orderItem.id,
+          name: orderItem.name,
+          price: orderItem.price / orderItem.quantity,
+          quantity: orderItem.quantity,
+          product_id: '1',
+          order_id: 'o1',
+        },
+      ],
+    });
+
+    order.confirmPayment();
+
+    await orderRepository.update(order);
+
+    const orderModelUpdated = await OrderModel.findOne({
+      where: { id: order.id },
+      include: ['items'],
+    });
+
+    expect(orderModelUpdated.toJSON()).toStrictEqual({
+      id: 'o1',
+      customer_id: '1',
+      total: order.total(),
+      is_paid: order.isPaid,
       items: [
         {
           id: orderItem.id,
